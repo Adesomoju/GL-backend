@@ -1,18 +1,21 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../middleware/auth');
 
 const {
     getCompany,
     getCompanies,
     createCompany,
     updateCompany,
-    getCompanyByISIN
+    getCompanyByISIN,
+    getCompanyByISINorID
 } = require('../controllers/company.controller.js');
 
-router.get('/', getCompanies);
-router.get('/:id', getCompany);
-router.get('/isin/:isin', getCompanyByISIN);
-router.post('/', createCompany);
-router.put('/:id', updateCompany);
+router.get('/', auth, getCompanies);
+router.get('/:id', auth, getCompany);
+router.get('/isin/:isin', auth, getCompanyByISIN);
+router.post('/', auth, createCompany);
+router.put('/:id', auth, updateCompany);
+router.get('/isin/id/:id', auth, getCompanyByISINorID);
 
 module.exports = router;

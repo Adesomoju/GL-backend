@@ -39,6 +39,27 @@ const getCompany = async (req, res) => {
     }
 };
 
+// Find a single company with  ISIN or ID
+const getCompanyByISINorID = async (req, res) => {
+    try {
+        const {isin} = req.params;
+        const company = await Company.findOne({
+                $or: [{
+                        isin: isin
+                    },
+                    {
+                        _id: isin
+                    }
+                ]
+            });
+        res.status(200).json(company);
+    }
+    catch (error) {
+        res.status(400).json({
+            message: error.message
+        });
+    }
+}
 // Find a single company with  ISIN
 const getCompanyByISIN = async (req, res) => {
     try {
@@ -85,5 +106,6 @@ module.exports = {
     getCompanies,
     getCompany,
     getCompanyByISIN,
-    updateCompany
+    updateCompany,
+    getCompanyByISINorID
 };
